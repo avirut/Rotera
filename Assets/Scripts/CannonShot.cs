@@ -13,6 +13,7 @@ public class CannonShot : MonoBehaviour
 	public float despawnTimeSeconds;
 	public static List<GameObject> balls;
 	public GameObject original;
+	static bool paused = false;
     // Update is called once per frame
 	void Start()
 	{
@@ -30,17 +31,25 @@ public class CannonShot : MonoBehaviour
 		if(balls.Contains(original))
 			balls.Remove(original);
 		checkForDestruction();
-        if (fireType==-1.0f&&Input.GetButtonDown("Fire1"))
+		if ((fireType==-1.0f || paused)&&Input.GetButtonDown("Fire1"))
         {
 			shoot();
         }
-		else if(fireType<=0.0f)
+		else if(fireType<=0.0f && !paused)
 		{
 			shoot();
 		}
-		else if(fireType<=Time.time-lastTime)
+		else if(fireType<=Time.time-lastTime && !paused)
 		{
 			shoot();
+		}
+		if(Input.GetKey(KeyCode.LeftShift))
+		{
+			paused = true;
+			//Debug.Log("got it");
+		}
+		else{
+			paused = false;
 		}
     }
 	

@@ -58,11 +58,9 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 		vel1 = -1.0f;
 		DontDestroyOnLoad(GameObject.Find("Player"));
-		DontDestroyOnLoad(GameObject.Find("Goal"));
 		//DontDestroyOnLoad(GameObject.Find("Ground"));
 		//DontDestroyOnLoad(GameObject.Find("Directional Light"));
 		DontDestroyOnLoad(GameObject.Find("Point light"));
-		goal.position = new Vector3(150.0f, -10.0099f, 150.0f);
 		startingPos = new Vector3(47.87f, 4.4f, 20.0f);
 		level = 0;
 		Cursor.visible = false;
@@ -107,6 +105,11 @@ IEnumerator waitSeconds(int i)
 			touched = (JumpPad)collisionInfo.gameObject.GetComponent(typeof(JumpPad));
 			launchPower = touched.height;
 			launch();
+		}
+		
+		if(collisionInfo.gameObject.tag == "Finish")
+		{
+			resetLevels();
 		}
 		
 		groundType = collisionInfo.gameObject.tag;
@@ -283,6 +286,15 @@ IEnumerator waitSeconds(int i)
 		inTrigger = false;
 	}
 */
+	public void resetLevels()
+	{
+		respawn = true;
+		respawn2 = true;
+		DespawnBall.despawnBalls();
+		transform.position = startingPos;
+		rb.velocity = new Vector3(0.0f,0.0f,0.0f);
+	}
+
 	public void startLoad()
 	{
 		
